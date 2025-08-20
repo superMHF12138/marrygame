@@ -123,6 +123,8 @@
             fx.lineTo(x + Math.cos(angle) * len, y + Math.sin(angle) * len);
             fx.stroke();
         }
+        // romance flow: pause, show phrase, then optional video
+        showRomance();
     }
 
     function confetti() {
@@ -255,6 +257,54 @@
         statusEl.textContent = '扫码直达';
         setLoading(false);
     })();
+
+    // romance overlay logic
+    const romanceEl = document.getElementById('romance');
+    const phraseEl = document.getElementById('phrase');
+    const videoWrap = document.getElementById('videoWrap');
+    const playVideoBtn = document.getElementById('playVideoBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const romanceVideo = document.getElementById('romanceVideo');
+    const phrases = [
+        '遇见你之前，世界只是世界；遇见你之后，世界有了你。',
+        '我愿做你的海，包容你的小脾气与小任性，也守护你所有的大梦想。',
+        '从今往后，我的快乐里要有你，我的未来里也要有你。',
+        '你不需要多完美，我会努力成为那个给你温暖的人。',
+        '想把全世界最好的都给你，包括那个最笨拙但最真诚的我。'
+    ];
+    let phraseIndex = 0;
+    function nextPhrase() {
+        const text = phrases[phraseIndex % phrases.length];
+        phraseIndex++;
+        return text;
+    }
+
+    function showRomance() {
+        paused = true;
+        phraseEl.textContent = nextPhrase();
+        romanceEl.classList.remove('hidden');
+        videoWrap.classList.add('hidden');
+    }
+
+    playVideoBtn?.addEventListener('click', async () => {
+        // Use demo video; replace with your file under videos/demo.mp4
+        // 用户可上传到 marryme/videos/，命名为 001.mp4,002.mp4 等并在此处按需轮播
+        const demo = 'videos/demo.mp4';
+        romanceVideo.src = demo;
+        videoWrap.classList.remove('hidden');
+        try { await romanceVideo.play(); } catch { }
+    });
+
+    skipBtn?.addEventListener('click', () => {
+        romanceVideo.pause();
+        romanceEl.classList.add('hidden');
+        start();
+    });
+
+    romanceVideo?.addEventListener('ended', () => {
+        romanceEl.classList.add('hidden');
+        start();
+    });
 
     // init game
     restart();

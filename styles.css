@@ -287,6 +287,60 @@ body {
     padding: 24px 0 48px;
 }
 
+.romance {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    display: grid;
+    place-items: center;
+    z-index: 20;
+}
+
+.romance.hidden {
+    display: none;
+}
+
+.romance-card {
+    max-width: 560px;
+    width: calc(100% - 40px);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06));
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    padding: 18px 18px 14px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.phrase {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    margin: 6px 4px 10px;
+}
+
+.video-wrap {
+    margin-top: 8px;
+}
+
+.video-wrap.hidden {
+    display: none;
+}
+
+.video {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #000;
+}
+
+.video-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
 @media (max-width: 560px) {
     .qr-row {
         grid-template-columns: 1fr;

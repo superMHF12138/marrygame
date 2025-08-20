@@ -66,6 +66,21 @@
             </div>
         </section>
 
+        <!-- Romance overlay: phrase + video -->
+        <div id="romance" class="romance hidden" role="dialog" aria-live="polite">
+            <div class="romance-card">
+                <p id="phrase" class="phrase"></p>
+                <div class="video-wrap hidden" id="videoWrap">
+                    <video id="romanceVideo" class="video" playsinline webkit-playsinline preload="metadata"
+                        controls></video>
+                    <div class="video-actions">
+                        <button id="playVideoBtn" class="btn">播放视频</button>
+                        <button id="skipBtn" class="btn btn-outline">继续游戏</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="share">
             <h3>分享这份浪漫</h3>
             <p class="tip">二维码将自动生成，可在任何网络下访问（公网隧道）。</p>
