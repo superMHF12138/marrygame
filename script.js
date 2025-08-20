@@ -174,12 +174,22 @@
     document.getElementById('restartBtn').addEventListener('click', restart);
     document.getElementById('overlayRestart').addEventListener('click', () => { restart(); start(); });
 
-    document.addEventListener('keydown', (e) => {
-        const key = e.key;
+    function setDirectionByKey(key) {
         if (key === 'ArrowUp' && direction.y !== 1) nextDirection = { x: 0, y: -1 };
         else if (key === 'ArrowDown' && direction.y !== -1) nextDirection = { x: 0, y: 1 };
         else if (key === 'ArrowLeft' && direction.x !== 1) nextDirection = { x: -1, y: 0 };
         else if (key === 'ArrowRight' && direction.x !== -1) nextDirection = { x: 1, y: 0 };
+    }
+
+    document.addEventListener('keydown', (e) => {
+        setDirectionByKey(e.key);
+    });
+
+    // on-screen mobile keys (click/touch)
+    document.querySelectorAll('.mobile-keys button').forEach(btn => {
+        const key = btn.getAttribute('data-key');
+        btn.addEventListener('click', () => setDirectionByKey(key));
+        btn.addEventListener('touchstart', (ev) => { ev.preventDefault(); setDirectionByKey(key); }, { passive: false });
     });
 
     // QR code - auto render
