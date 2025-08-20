@@ -1,0 +1,6 @@
+# Exclude local binaries and logs
+cloudflared.exe
+*.log
+public_url.txt
+*.zip
+bgm.mp3 
