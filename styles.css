@@ -195,6 +195,9 @@ body {
     place-items: center;
     gap: 6px;
     margin-top: 12px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
 }
 
 .mobile-keys .row {
@@ -211,6 +214,9 @@ body {
     background: rgba(255, 255, 255, 0.06);
     color: var(--text);
     font-size: 18px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
 }
 
 .share {

@@ -188,8 +188,10 @@
     // on-screen mobile keys (click/touch)
     document.querySelectorAll('.mobile-keys button').forEach(btn => {
         const key = btn.getAttribute('data-key');
-        btn.addEventListener('click', () => setDirectionByKey(key));
-        btn.addEventListener('touchstart', (ev) => { ev.preventDefault(); setDirectionByKey(key); }, { passive: false });
+        const handle = (ev) => { ev.preventDefault(); setDirectionByKey(key); if (paused) start(); };
+        btn.addEventListener('click', handle);
+        btn.addEventListener('touchstart', handle, { passive: false });
+        btn.addEventListener('pointerdown', handle);
     });
 
     // QR code - auto render
