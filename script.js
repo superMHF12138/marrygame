@@ -186,9 +186,15 @@
     });
 
     // on-screen mobile keys (click/touch)
+    const keysContainer = document.querySelector('.mobile-keys');
+    if (keysContainer) {
+        const block = (ev) => { ev.preventDefault(); ev.stopPropagation(); };
+        ['touchstart', 'touchmove', 'touchend'].forEach(t => keysContainer.addEventListener(t, block, { passive: false }));
+        keysContainer.addEventListener('pointerdown', block);
+    }
     document.querySelectorAll('.mobile-keys button').forEach(btn => {
         const key = btn.getAttribute('data-key');
-        const handle = (ev) => { ev.preventDefault(); setDirectionByKey(key); if (paused) start(); };
+        const handle = (ev) => { ev.preventDefault(); ev.stopPropagation(); if (ev.stopImmediatePropagation) ev.stopImmediatePropagation(); setDirectionByKey(key); if (paused) start(); };
         btn.addEventListener('click', handle);
         btn.addEventListener('touchstart', handle, { passive: false });
         btn.addEventListener('pointerdown', handle);
