@@ -279,6 +279,36 @@
         return text;
     }
 
+    // video queue: try to load from videos/manifest.json; fallback to predefined names if exists
+    let videoList = [];
+    let videoIndex = 0;
+    async function loadVideoList() {
+        try {
+            const resp = await fetch('videos/manifest.json', { cache: 'no-store' });
+            if (resp.ok) {
+                const arr = await resp.json();
+                if (Array.isArray(arr)) {
+                    videoList = arr.filter(x => typeof x === 'string' && x.trim());
+                }
+            }
+        } catch { }
+        // Optional fallback examples
+        if (!videoList.length) {
+            // 留空表示无视频库，仅显示情话
+            // 你可以在仓库 videos/ 下添加 manifest.json，如 ["videos/001.mp4","videos/002.mp4"]
+        }
+    }
+    loadVideoList();
+
+    function getNextVideo() {
+        if (videoIndex < videoList.length) {
+            const src = videoList[videoIndex];
+            videoIndex++;
+            return src;
+        }
+        return null;
+    }
+
     function showRomance() {
         paused = true;
         phraseEl.textContent = nextPhrase();
@@ -286,16 +316,27 @@
         videoWrap.classList.add('hidden');
     }
 
-    playVideoBtn?.addEventListener('click', async () => {
-        // Use demo video; replace with your file under videos/demo.mp4
-        // 用户可上传到 marryme/videos/，命名为 001.mp4,002.mp4 等并在此处按需轮播
-        const demo = 'videos/demo.mp4';
-        romanceVideo.src = demo;
+    async function playNextVideoWithDelay() {
+        const next = getNextVideo();
+        await new Promise(r => setTimeout(r, 1000)); // 延时 1 秒
+        if (!next) {
+            // 没有视频，直接继续游戏
+            romanceEl.classList.add('hidden');
+            start();
+            return;
+        }
+        romanceVideo.src = next;
         videoWrap.classList.remove('hidden');
         try { await romanceVideo.play(); } catch { }
-    });
+    }
 
-    skipBtn?.addEventListener('click', () => {
+    // 点击任意位置（含按钮）→ 延时 1s → 播放下一段视频；若无视频则直接回到游戏
+    const handleOverlayClick = (ev) => { ev.preventDefault(); ev.stopPropagation(); playNextVideoWithDelay(); };
+    romanceEl?.addEventListener('click', handleOverlayClick);
+    playVideoBtn?.addEventListener('click', handleOverlayClick);
+
+    skipBtn?.addEventListener('click', (ev) => {
+        ev.preventDefault(); ev.stopPropagation();
         romanceVideo.pause();
         romanceEl.classList.add('hidden');
         start();
